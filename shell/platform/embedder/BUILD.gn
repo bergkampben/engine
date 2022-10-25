@@ -116,6 +116,10 @@ template("embedder_source_set") {
       "//third_party/skia",
     ]
 
+    if (is_fuchsia) {
+      deps += [ "//flutter/tools/fuchsia/dart:zircon" ]
+    }
+
     if (embedder_enable_metal) {
       sources += [
         "embedder_external_texture_metal.h",

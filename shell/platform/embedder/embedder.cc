@@ -68,6 +68,10 @@ extern const intptr_t kPlatformStrongDillSize;
 #include "flutter/shell/platform/embedder/embedder_surface_metal.h"
 #endif
 
+#if OS_FUCHSIA
+#include "flutter/shell/platform/fuchsia/dart-pkg/zircon/sdk_ext/natives.h"
+#endif
+
 const int32_t kFlutterSemanticsNodeIdBatchEnd = -1;
 const int32_t kFlutterSemanticsCustomActionIdBatchEnd = -1;
 
@@ -1737,6 +1741,40 @@ FlutterEngineResult FlutterEngineInitialize(size_t version,
         kInvalidArguments,
         "Could not infer the Flutter project to run from given arguments.");
   }
+
+  // TODO(benbergkamp)
+  // Just try and get this callback to fire once...
+  // It seems this never gets called when running an app with the embedder. Not
+  // sure why
+  settings.root_isolate_create_callback = [](const flutter::DartIsolate&) {
+    FML_LOG(INFO) << "benbergk-root_isolate_create_callback";
+  };
+
+#if OS_FUCHSIA
+  {
+    // I'm not sure what exactly is required to get the FIDL suppor to work.
+    // The following is the only logic that Chase mentioned was required
+    zircon::dart::Initialize();
+
+    // The following may be required. It is executed at the same time as the
+    // above code in the non-embedder logic (See
+    // shell/platform/fuchsia/dart-pkg/fuchsia/sdk_ext/fuchsia.cc::Initialize())
+    //
+    // In non-embedder, these fields comes from component_v2.h
+    // fuchsia::ui::views::ViewRef isolate_view_ref;
+    // fuchsia::io::DirectoryPtr directory_ptr;
+    // fidl::InterfaceRequest<fuchsia::io::Directory> directory_request =
+    // directory_ptr.NewRequest(); flutter_runner::UniqueFDIONS fdio_ns =
+    // flutter_runner::UniqueFDIONSCreate();
+    //
+    // In the non-embedder version, this is actually invoked by the
+    // root_isolate_create_callback (see above). However, I couldn't get that
+    // callback to trigger when running apps with the embedder.
+    // fuchsia::dart::Initialize(nullptr /*V2 components don't set this*/,
+    //                        std::move(directory_request),
+    //                        std::move(isolate_view_ref));
+  }
+#endif
 
   // Create the engine but don't launch the shell or run the root isolate.
   auto embedder_engine = std::make_unique<flutter::EmbedderEngine>(
