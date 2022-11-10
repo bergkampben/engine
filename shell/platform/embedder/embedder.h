@@ -2625,6 +2625,10 @@ FlutterEngineResult FlutterEngineSetNextFrameCallback(
     VoidCallback callback,
     void* user_data);
 
+// Temporary hack
+FLUTTER_EXPORT
+void FlutterEngineRunMessageLoop();
+
 #endif  // !FLUTTER_ENGINE_NO_PROTOTYPES
 
 // Typedefs for the function pointers in FlutterEngineProcTable.
@@ -2747,6 +2751,7 @@ typedef FlutterEngineResult (*FlutterEngineSetNextFrameCallbackFnPtr)(
     FLUTTER_API_SYMBOL(FlutterEngine) engine,
     VoidCallback callback,
     void* user_data);
+typedef void (*FlutterEngineRunMessageLoopCallbackFnPtr)();
 
 /// Function-pointer-based versions of the APIs above.
 typedef struct {
@@ -2793,6 +2798,7 @@ typedef struct {
   FlutterEngineNotifyDisplayUpdateFnPtr NotifyDisplayUpdate;
   FlutterEngineScheduleFrameFnPtr ScheduleFrame;
   FlutterEngineSetNextFrameCallbackFnPtr SetNextFrameCallback;
+  FlutterEngineRunMessageLoopCallbackFnPtr RunMessageLoopCallback;
 } FlutterEngineProcTable;
 
 //------------------------------------------------------------------------------

@@ -2922,6 +2922,11 @@ FlutterEngineResult FlutterEngineSetNextFrameCallback(
   return kSuccess;
 }
 
+// Temporary hack
+void FlutterEngineRunMessageLoop() {
+  fml::MessageLoop::GetCurrent().Run();
+}
+
 FlutterEngineResult FlutterEngineGetProcAddresses(
     FlutterEngineProcTable* table) {
   if (!table) {
@@ -2974,6 +2979,7 @@ FlutterEngineResult FlutterEngineGetProcAddresses(
   SET_PROC(NotifyDisplayUpdate, FlutterEngineNotifyDisplayUpdate);
   SET_PROC(ScheduleFrame, FlutterEngineScheduleFrame);
   SET_PROC(SetNextFrameCallback, FlutterEngineSetNextFrameCallback);
+  SET_PROC(RunMessageLoopCallback, FlutterEngineRunMessageLoop);
 #undef SET_PROC
 
   return kSuccess;
