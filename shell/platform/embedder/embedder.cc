@@ -71,6 +71,12 @@ extern const intptr_t kPlatformStrongDillSize;
 const int32_t kFlutterSemanticsNodeIdBatchEnd = -1;
 const int32_t kFlutterSemanticsCustomActionIdBatchEnd = -1;
 
+// Platform message channel definitions
+const char kFlutterPlatformChannel[] = "flutter/platform";
+const char kAccessibilityChannel[] = "flutter/accessibility";
+const char kFlutterPlatformViewsChannel[] = "flutter/platform_views";
+const char kFuchsiaShaderWarmupChannel[] = "fuchsia/shader_warmup";
+
 // A message channel to send platform-independent FlutterKeyData to the
 // framework.
 //

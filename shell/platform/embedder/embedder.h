@@ -79,6 +79,16 @@ typedef enum {
   kVulkan,
 } FlutterRendererType;
 
+/// Platform message channels
+FLUTTER_EXPORT
+extern const char kFlutterPlatformChannel[];
+FLUTTER_EXPORT
+extern const char kAccessibilityChannel[];
+FLUTTER_EXPORT
+extern const char kFlutterPlatformViewsChannel[];
+FLUTTER_EXPORT
+extern const char kFuchsiaShaderWarmupChannel[];
+
 /// Additional accessibility features that may be enabled by the platform.
 /// Must match the `AccessibilityFeatures` enum in window.dart.
 typedef enum {
